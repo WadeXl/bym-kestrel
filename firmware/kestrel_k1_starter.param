@@ -1,0 +1,80 @@
+# BYM Kestrel K1 - ArduPilot Copter STARTER parameters (Rev A, 2026-11-09)
+# Target: ARK FPV + 4in1 AM32 ESC + MicoAir MTF-01 + ESP ELRS RX (MAVLink mode) + 3S 450 mAh
+# !!! UNTESTED. Load on the bench with PROPS OFF, then verify every item in spec section 11. !!!
+# Names follow Copter 4.6.x. Copter 4.7 renamed some (e.g. MAVx_OPTIONS, RNGFND1_MAX in metres, GPS1_TYPE) - check on load.
+# Serial map from ArduPilot ARK FPV page: SERIAL1=UART7 TELEM (GH 6p), SERIAL6=USART6 RC (GH 4p).
+
+# --- Frame / outputs ---
+FRAME_CLASS,1          # quad
+FRAME_TYPE,1           # X
+MOT_PWM_TYPE,6         # DShot600
+SERVO_BLH_BDMASK,15    # bidirectional DShot on motors 1-4 (enables RPM notch later)
+MOT_SPIN_ARM,0.06      # visible slow spin = "armed" cue
+MOT_SPIN_MIN,0.10      # tune on thrust test
+
+# --- ELRS RX in MAVLink mode on RC port ---
+SERIAL6_PROTOCOL,2     # MAVLink2
+SERIAL6_BAUD,460
+RSSI_TYPE,5
+SYSID_THISMAV,1        # keep 1 (reported ELRS RC issue otherwise)
+SYSID_MYGCS,255
+RC_OVERRIDE_TIME,0.5   # TEST: RC failsafe behaviour on link loss (spec C5)
+
+# --- Switches (ELRS: CH5 must be the arm switch) ---
+RC5_OPTION,153         # ARM / DISARM switch
+FLTMODE_CH,6           # 3-pos MODE switch
+FLTMODE1,5             # low  = LOITER (kids' default)
+FLTMODE4,4             # mid  = GUIDED ("COMPUTER" - website can fly)
+FLTMODE6,9             # high = LAND
+RC7_OPTION,31          # KILL = Motor Emergency Stop (guarded switch)
+
+# --- MTF-01 optical flow + ToF on TELEM (sensor protocol set to mav-apm in MicoAssistant) ---
+SERIAL1_PROTOCOL,1     # MAVLink1
+SERIAL1_BAUD,115
+SERIAL1_OPTIONS,1024   # don't forward MAVLink (pre-4.7; on 4.7 use MAVx_OPTIONS=2)
+FLOW_TYPE,5            # MAVLink
+FLOW_ORIENT_YAW,0      # VERIFY with flow-vs-attitude check; wrong value = flyaway
+RNGFND1_TYPE,10        # MAVLink
+RNGFND1_ORIENT,25      # down
+RNGFND1_MAX_CM,800
+RNGFND1_MIN_CM,1
+
+# --- EKF3 sources: no GPS, flow for horizontal velocity ---
+GPS_TYPE,0
+EK3_SRC1_POSXY,0
+EK3_SRC1_VELXY,5       # optical flow
+EK3_SRC1_POSZ,1        # baro
+EK3_SRC1_VELZ,0
+EK3_SRC1_YAW,1         # compass - check indoor interference; consider external compass
+EK3_RNG_USE_HGT,70     # use rangefinder for height when low
+
+# --- Kid-safe limits ---
+ANGLE_MAX,1500         # 15 deg
+PILOT_SPEED_UP,50      # cm/s
+PILOT_SPEED_DN,40
+LOIT_SPEED,100         # cm/s
+WPNAV_SPEED,100
+PILOT_TKOFF_ALT,100    # cm
+DISARM_DELAY,5
+
+# --- Fence ---
+FENCE_ENABLE,1
+FENCE_TYPE,3           # max altitude + circle
+FENCE_ALT_MAX,2.0      # m
+FENCE_RADIUS,3         # m (needs EKF origin; website sets it on connect)
+FENCE_MARGIN,0.5
+FENCE_ACTION,2         # always Land
+
+# --- Failsafes ---
+FS_THR_ENABLE,3        # RC loss -> Land
+FS_GCS_ENABLE,5        # website/GCS loss -> Land (when in GUIDED)
+FS_EKF_ACTION,1        # EKF/flow failure -> Land
+ARMING_CHECK,1
+
+# --- Battery (3S 450 mAh) ---
+BATT_MONITOR,4         # analog V + I (from ESC connector)
+BATT_CAPACITY,450
+BATT_LOW_VOLT,10.5
+BATT_CRT_VOLT,10.0
+BATT_FS_LOW_ACT,1      # Land
+BATT_FS_CRT_ACT,1      # Land

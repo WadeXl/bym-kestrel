@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+
+# Fusion / CAD temp
+*.f3d.bak
+~$*
+*.tmp
+
+# Slicer outputs (keep STL/STEP sources, not machine G-code)
+*.gcode
+*.bgcode
+*.3mf.bak
+
+# ArduPilot logs
+*.bin
+*.tlog
