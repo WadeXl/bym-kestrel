@@ -17,6 +17,7 @@ Kestrel is a 3-inch ducted quadcopter kit designed for **BYM** (about 19 cm acro
 | Path | Contents |
 |---|---|
 | [docs/BYM_Kestrel_K1_Design_Spec.md](docs/BYM_Kestrel_K1_Design_Spec.md) | Requirements, architecture, trade study, BOM (3 cost tiers), weight/thrust/endurance, radio bridge + website design, safety, student build guide, test plan, risks and open questions |
+| [docs/Educational_Drone_Trade_Study.md](docs/Educational_Drone_Trade_Study.md) | What makes a good educational drone: 11 weighted criteria, 8 platforms scored (CoDrone EDU, Crazyflie, Duckiedrone, LiteWing, Drone Soccer, Tello, Kestrel), sensitivity analysis, Rev B targets |
 | [cad/](cad/) | STEP (full assembly + printable parts) and STL (printable parts) |
 | [renders/](renders/) | Iso, top, front, bottom, exploded and with-remote views |
 | [firmware/kestrel_k1_starter.param](firmware/kestrel_k1_starter.param) | ArduPilot Copter starter parameters. **Untested.** |
